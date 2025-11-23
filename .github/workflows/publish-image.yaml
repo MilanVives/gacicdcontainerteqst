@@ -1,0 +1,15 @@
+name: Docker Image CI for GHCR
+
+on: push
+
+jobs:
+    build_and_publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Build and Push the image
+              uses: docker/build-push-action@v2
+              run: |
+                  docker login ghcr.io -u milanvives -p ${{ secrets.GH_PAT }}
+                  docker build . -t ghcr.io/containerizedapp:latest
+                  docker push ghcr.io/containerizedapp:latest
